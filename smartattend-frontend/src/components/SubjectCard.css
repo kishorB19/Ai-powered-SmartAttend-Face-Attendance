@@ -1,0 +1,27 @@
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.subject-card-name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-text);
+}
+
+.subject-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.subject-card-section {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.subject-card-footer {
+  margin-top: 0.25rem;
+}

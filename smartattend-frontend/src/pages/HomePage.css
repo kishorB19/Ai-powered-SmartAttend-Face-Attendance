@@ -1,0 +1,115 @@
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem 0;
+}
+
+.home-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(108, 99, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 2.5rem auto;
+}
+
+.home-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-xl);
+  gap: 1rem;
+  transition: all var(--transition-slow);
+}
+
+.home-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--color-primary);
+}
+
+.home-card h2 {
+  font-size: 1.4rem;
+  color: var(--color-text);
+}
+
+.home-card p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.home-card-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.student-icon {
+  background: rgba(108, 99, 255, 0.15);
+  color: var(--color-primary-light);
+}
+
+.teacher-icon {
+  background: rgba(244, 114, 182, 0.15);
+  color: var(--color-accent);
+}
+
+.home-features {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem 0;
+}
+
+.home-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.home-feature svg {
+  color: var(--color-primary);
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .home-cards {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+  .home-card {
+    padding: 2rem 1.5rem;
+  }
+  .home-features {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
