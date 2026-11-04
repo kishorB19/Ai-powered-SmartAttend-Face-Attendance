@@ -34,9 +34,9 @@ export default function TeacherRegister() {
       }
       await createTeacher(username.trim(), password, name.trim());
       toast.success('Account created! Please login now.');
-      navigate('/teacher/login');
-    } catch {
-      toast.error('Registration failed. Please try again.');
+    } catch (err) {
+      console.error('Teacher registration error:', err);
+      toast.error(err?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }

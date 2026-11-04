@@ -141,7 +141,8 @@ export default function StudentLogin() {
         navigate(dest);
       }
     } catch (err) {
-      toast.error('Registration failed. Please try again.');
+      console.error('Student registration error:', err);
+      toast.error(err?.message || 'Registration failed. Please try again.');
     } finally {
       setScanning(false);
     }

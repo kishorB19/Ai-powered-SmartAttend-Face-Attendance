@@ -30,8 +30,9 @@ export default function TeacherLogin() {
       } else {
         toast.error('Invalid username or password');
       }
-    } catch {
-      toast.error('Login failed. Please try again.');
+    } catch (err) {
+      console.error('Teacher login error:', err);
+      toast.error(err?.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
