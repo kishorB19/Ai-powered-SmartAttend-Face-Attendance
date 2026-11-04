@@ -59,6 +59,16 @@ export async function createStudent(name, faceEmbedding = null) {
   return data;
 }
 
+export async function updateStudentEmbedding(studentId, faceEmbedding) {
+  const { data, error } = await supabase
+    .from('students')
+    .update({ face_embedding: faceEmbedding })
+    .eq('student_id', studentId)
+    .select();
+  if (error) throw error;
+  return data;
+}
+
 /* ─── Subject ────────────────────────────────────── */
 
 export async function createSubject(subjectCode, name, section, teacherId) {

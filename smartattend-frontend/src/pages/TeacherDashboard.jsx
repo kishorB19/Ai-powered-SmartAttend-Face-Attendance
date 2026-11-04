@@ -11,6 +11,7 @@ import {
   getAttendanceForTeacher,
   getAllStudents
 } from '../lib/db';
+import { computeFaceDescriptor, matchFace } from '../lib/face';
 import {
   BookOpen,
   Camera,
@@ -192,42 +193,30 @@ export default function TeacherDashboard() {
       const detectedIds = new Set();
       const detectedSources = {};
 
-      if (FACE_API_URL) {
-        // Send each photo to face detection API
-        for (let i = 0; i < photos.length; i++) {
-          try {
-            const blob = await (await fetch(photos[i])).blob();
-            const formData = new FormData();
-            formData.append('image', blob, `photo_${i + 1}.jpg`);
+      // Process each classroom photo
+      for (let i = 0; i < photos.length; i++) {
+        try {
+          const img = new Image();
+          img.src = photos[i];
+          await new Promise(r => { img.onload = r; });
 
-            const res = await fetch(`${FACE_API_URL}/api/face/predict`, {
-              method: 'POST',
-              body: formData,
-            });
-            const data = await res.json();
-            if (data.detected) {
-              Object.keys(data.detected).forEach(sid => {
-                const sIdNum = parseInt(sid, 10);
-                detectedIds.add(sIdNum);
-                detectedSources[sIdNum] = detectedSources[sIdNum] || [];
-                detectedSources[sIdNum].push(`Photo ${i + 1}`);
-              });
-            }
-          } catch (e) {
-            console.error('Error scanning photo:', e);
+          const descriptor = await computeFaceDescriptor(img);
+          const match = matchFace(descriptor, enrolledStudents, 0.70);
+
+          if (match && match.student) {
+            const sid = match.student.student_id;
+            detectedIds.add(sid);
+            detectedSources[sid] = detectedSources[sid] || [];
+            detectedSources[sid].push(`Photo ${i + 1}`);
           }
+        } catch (e) {
+          console.error('Error scanning photo:', e);
         }
-      } else {
-        // Fallback demo/simulation mode: mark students detected from photos
-        // If photos are provided, simulate detected match for enrolled students
-        enrolledStudents.forEach((student, index) => {
-          // If at least one photo, give a simulated detection
-          if (index % 2 === 0 || photos.length > 0) {
-            detectedIds.add(student.student_id);
-            detectedSources[student.student_id] = ['Photo 1'];
-          }
-        });
-        toast('Demo Mode: Processed photos locally', { icon: '🤖' });
+      }
+
+      // If no students matched (e.g. photos without faces), mark first photo scan complete
+      if (detectedIds.size === 0 && enrolledStudents.length > 0) {
+        toast('Scan complete. Review attendance below before saving.', { icon: 'ℹ️' });
       }
 
       // Build checklist
